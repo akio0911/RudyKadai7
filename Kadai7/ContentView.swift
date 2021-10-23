@@ -16,6 +16,32 @@ struct ContentView: View {
     }
 }
 
+//enum OperatorType {
+//    case addition
+//    case subtraction
+//
+//    func calcTextNum(type: OperatorType, _ stringNum1: String, _ stringNum2: String) -> String {
+//        guard let num1 = Int(stringNum1) else { return "Label" }
+//        guard let num2 = Int(stringNum2) else { return "Label" }
+//
+//        switch type {
+//        case.addition:
+//            return String(num1 + num2)
+//        case.subtraction:
+//            return String(num1 - num2)
+//        }
+//    }
+//
+//    func color() -> Color {
+//        switch self {
+//        case .addition:
+//            return Color.red
+//        case .subtraction:
+//            return Color.green
+//        }
+//    }
+//}
+
 struct AddtionOrSubtructionPage: View {
     private func calcTextNum(_ stringNum1: String, _ stringNum2: String, calculation: (Int, Int) -> Int) -> String {
         guard let num1 = Int(stringNum1) else { return "Label" }
