@@ -6,54 +6,34 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var addition: OperatorType = .addition
-    @State var subtraction: OperatorType = .subtraction
-
     var body: some View {
         TabView {
-            AddtionOrSubtructionPage(operatorType: $addition)
+            AddtionOrSubtructionPage(calculation: +, backgroundColor: .red)
                 .tabItem { Text("Item 1") }
-            AddtionOrSubtructionPage(operatorType: $subtraction)
+            AddtionOrSubtructionPage(calculation: -, backgroundColor: .green)
                 .tabItem { Text("Item 2") }
         }
     }
 }
 
-enum OperatorType {
-    case addition
-    case subtraction
-
-    func calcTextNum(type: OperatorType, _ stringNum1: String, _ stringNum2: String) -> String {
+struct AddtionOrSubtructionPage: View {
+    private func calcTextNum(_ stringNum1: String, _ stringNum2: String, calculation: (Int, Int) -> Int) -> String {
         guard let num1 = Int(stringNum1) else { return "Label" }
         guard let num2 = Int(stringNum2) else { return "Label" }
 
-        switch type {
-        case.addition:
-            return String(num1 + num2)
-        case.subtraction:
-            return String(num1 - num2)
-        }
+        return String(calculation(num1, num2))
     }
 
-    func color() -> Color {
-        switch self {
-        case .addition:
-            return Color.red
-        case .subtraction:
-            return Color.green
-        }
-    }
-}
-
-struct AddtionOrSubtructionPage: View {
     @State private var stringNum1: String = ""
     @State private var stringNum2: String = ""
     @State private var textAnsewr: String = "Label"
-    @Binding var operatorType: OperatorType
+
+    let calculation: (Int, Int) -> Int
+    let backgroundColor: Color
 
     var body: some View {
         ZStack {
-            operatorType.color()
+            backgroundColor
                 .edgesIgnoringSafeArea(.all)
                 .opacity(0.65)
                 .onTapGesture {
@@ -63,7 +43,7 @@ struct AddtionOrSubtructionPage: View {
                 InputNumField(stringNum: $stringNum1)
                 InputNumField(stringNum: $stringNum2)
                 Button(action: {
-                    textAnsewr = operatorType.calcTextNum(type: operatorType, stringNum1, stringNum2)
+                    textAnsewr = calcTextNum(stringNum1, stringNum2, calculation: calculation)
                     UIApplication.shared.closeKeyboard()
                 }, label: {
                     Text("Button")
